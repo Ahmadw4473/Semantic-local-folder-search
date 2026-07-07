@@ -1,4 +1,5 @@
 from pathlib import Path
+from transformers import pipeline
 
 folder_path = Path.home() / "Pictures"
 
@@ -9,3 +10,10 @@ for path in folder_path.rglob("*"):
         images.append(path)
 
 print(images[:20])
+
+
+pipe = pipeline("zero-shot-image-classification", model="openai/clip-vit-base-patch32")
+pipe(
+    "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/hub/parrots.png",
+    candidate_labels=["animals", "humans", "landscape"],
+)

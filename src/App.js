@@ -4,9 +4,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <div>
-          <h1>kj</h1>
-        </div>
+        < img src={require("C:/Users/User/Pictures/Screenshots/Screenshot 2025-10-24 003819.png")} alt="image not found" />
       </div>
 
     </>

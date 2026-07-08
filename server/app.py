@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from services.GetEmbeddings import getImage,get_text_embedding
+from .services.GetEmbeddings import getImage, get_text_embedding
+from fastapi.responses import FileResponse
 
 app = FastAPI()
 
@@ -20,3 +21,7 @@ class QueryData(BaseModel):
 def get_image_path(query: QueryData):
     queryEmbedding=get_text_embedding(query.text)
     return {"image": getImage(queryEmbedding)}
+
+@app.get("/image")
+def serve_image(path: str):
+    return FileResponse(path)

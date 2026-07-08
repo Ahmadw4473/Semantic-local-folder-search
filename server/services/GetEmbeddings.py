@@ -63,7 +63,7 @@ for image_path in images:
 def getImage(text_embedding):
     search_results = collection.query(
         query_embeddings=[tensor_to_vector(text_embedding)],
-        n_results=1
+        n_results=3
     )
 
     if search_results["ids"] and search_results["ids"][0]:

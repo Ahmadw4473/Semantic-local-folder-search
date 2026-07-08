@@ -1,70 +1,122 @@
-# Getting Started with Create React App
+# Semantic Folder Search
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A local semantic image search app built with React, FastAPI, CLIP embeddings, and ChromaDB.
 
-## Available Scripts
+The app scans images from your local Pictures folder, generates image embeddings using `openai/clip-vit-base-patch32`, stores them in ChromaDB, and lets you search images using natural language queries.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Search local images using text prompts
+- Generate image embeddings with CLIP
+- Store embeddings in ChromaDB
+- FastAPI backend for search and image serving
+- React frontend for entering queries and viewing results
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React
+- FastAPI
+- Transformers
+- PyTorch
+- ChromaDB
+- Pillow
 
-### `npm test`
+## Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Create and activate a Python virtual environment:
 
-### `npm run build`
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Install Python dependencies:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```powershell
+pip install fastapi uvicorn transformers torch pillow chromadb
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Install frontend dependencies:
 
-### `npm run eject`
+```powershell
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Run Backend
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn server.app:app --reload
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+FastAPI will run at:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```text
+http://127.0.0.1:8000
+```
 
-## Learn More
+API docs:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```text
+http://127.0.0.1:8000/docs
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Run Frontend
 
-### Code Splitting
+```powershell
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+React will run at:
 
-### Analyzing the Bundle Size
+```text
+http://localhost:3000
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## API
 
-### Making a Progressive Web App
+### Search Image
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```http
+POST /getImage
+```
 
-### Advanced Configuration
+Request body:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```json
+{
+  "text": "query"
+}
+```
 
-### Deployment
+Response:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```json
+{
+  "image": "C:\\Users\\User\\Pictures\\example.jpg"
+}
+```
 
-### `npm run build` fails to minify
+### Serve Image
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```http
+GET /image?path=...
+```
+
+Returns the actual image file so the frontend can display it.
+
+## How It Works
+
+1. Images are scanned from the local Pictures folder.
+2. Each image is converted into a CLIP embedding.
+3. Embeddings are stored in ChromaDB.
+4. A search query is converted into a text embedding.
+5. ChromaDB finds the most similar image embedding.
+6. FastAPI returns the matching image path.
+7. React displays the image through the backend `/image` endpoint.
+
+## Notes
+
+- The CLIP model may download on first run.
+- The first backend startup can be slow because image embeddings are generated.
+- ChromaDB data is stored locally.
+- This app is intended for local development and learning.

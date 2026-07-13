@@ -1,5 +1,8 @@
 # Semantic Folder Search
 
+<img width="1681" height="910" alt="image" src="https://github.com/user-attachments/assets/3c6c0b43-cd1a-4bcf-8b40-dbfd489b89c8" />
+
+
 A local semantic image search app built with React, FastAPI, CLIP embeddings, and ChromaDB.
 
 The app scans images from your local Pictures folder, generates image embeddings using `openai/clip-vit-base-patch32`, stores them in ChromaDB, and lets you search images using natural language queries.
